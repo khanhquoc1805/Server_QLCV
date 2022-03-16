@@ -5,6 +5,9 @@ import LinhVuc from "../model/LinhVuc.js";
 import LoaiCV from "../model/LoaiCV.js";
 import TT_BoSung from "../model/TT_BoSung.js";
 import removeVietnameseTones from "../utils/removeVNTones.js";
+import cloudinary from "cloudinary";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
+import fs from "fs";
 
 const cvdi = express.Router();
 
@@ -146,13 +149,22 @@ cvdi.post("/add", async function (req, res) {
     }
 
     dinhkem.mv("./public/file/cvdi/" + dinhkem.name);
+    const url = await uploadToCloudinary("./public/file/cvdi/" + dinhkem.name);
+    console.log(url);
+
+    fs.unlink("./public/file/cvdi/" + dinhkem.name, (err) => {
+        if (err) {
+            throw err;
+        }
+    });
+
     const ngayravbdiInsert = new Date(body.ngayravbdi);
     ngayravbdiInsert.setDate(ngayravbdiInsert.getDate() + 1);
     const ngayvbdi = new Date();
 
     const tt_bosung = await TT_BoSung.create({
         sotrang,
-        dinhkem: "./public/file/cvdi/" + dinhkem.name,
+        dinhkem: url.secure_url,
         dokhan,
         domat,
     });
@@ -216,7 +228,6 @@ cvdi.post("/themvaoso/:mavbdi", async function (req, res) {
         return;
     }
     res.send({ status: "successfully" });
-
 });
 
 export default cvdi;

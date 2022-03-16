@@ -5,6 +5,9 @@ import LinhVuc from "../model/LinhVuc.js";
 import LoaiCV from "../model/LoaiCV.js";
 import SoCV from "../model/SoCV.js";
 import TT_BoSung from "../model/TT_BoSung.js";
+import cloudinary from "cloudinary";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
+import fs from "fs";
 
 const cvden = express.Router();
 
@@ -155,6 +158,12 @@ cvden.post("/add", async function (req, res) {
         return;
     }
     dinhkem.mv("./public/file/cvden/" + dinhkem.name);
+    const url = await uploadToCloudinary("./public/file/cvden/" + dinhkem.name);
+    fs.unlink("./public/file/cvden/" + dinhkem.name, (err) => {
+        if (err) {
+            throw err;
+        }
+    });
     const ngaybanhanhInsert = new Date(ngaybanhanh);
     const ngaycohieulucInsert = new Date(ngaycohieuluc);
     const ngayhethieulucInsert = new Date(ngaycohieuluc);
@@ -164,7 +173,7 @@ cvden.post("/add", async function (req, res) {
 
     const tt_bosung = await TT_BoSung.create({
         sotrang,
-        dinhkem: "./public/file/cvden/" + dinhkem.name,
+        dinhkem: url.secure_url,
         dokhan,
         domat,
     });
