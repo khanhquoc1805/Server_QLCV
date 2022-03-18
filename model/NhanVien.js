@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import BoPhan from "./BoPhan.js";
 import sequelize from "./db.js";
+import DonVi from "./DonVi.js";
 
 const NhanVien = sequelize.define(
     "NhanVien",
@@ -38,12 +39,25 @@ const NhanVien = sequelize.define(
                 key: "mabp",
             },
         },
+        madv: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: DonVi,
+                key: "madv",
+            },
+        },
     },
     {
         tableName: "NhanVien",
         timestamps: false,
     }
 );
+NhanVien.belongsTo(DonVi, {
+    foreignKey: "madv",
+});
+NhanVien.belongsTo(BoPhan, {
+    foreignKey: "mabp",
+});
 
 await NhanVien.sync();
 

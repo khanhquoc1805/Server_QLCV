@@ -50,4 +50,12 @@ nhanvien.post("/add", async function (req, res) {
     res.send({ status: "success", message: "NhanVien has been created." });
 });
 
+nhanvien.post("", async function (req, res) {
+    const nv = await NhanVien.findAll({
+        attributes: ["manv", "tennv"],
+    });
+
+    res.send(nv);
+});
+
 export default nhanvien;

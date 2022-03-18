@@ -8,6 +8,7 @@ import removeVietnameseTones from "../utils/removeVNTones.js";
 import cloudinary from "cloudinary";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
+import NhanVien from "../model/NhanVien.js";
 
 const cvdi = express.Router();
 
@@ -132,6 +133,7 @@ cvdi.post("/add", async function (req, res) {
     const domat = body.domat;
     const malv = body.malv;
     const sotrang = body.sotrang;
+    const manv = body.manv;
 
     if (
         madv == null ||
@@ -142,7 +144,8 @@ cvdi.post("/add", async function (req, res) {
         dokhan == null ||
         domat == null ||
         malv == null ||
-        sotrang == null
+        sotrang == null ||
+        manv == null
     ) {
         res.send({ status: "failed" });
         return;
@@ -177,6 +180,7 @@ cvdi.post("/add", async function (req, res) {
         malv,
         matt: tt_bosung.getDataValue("matt"),
         ttxuly: "chuaxuly",
+        manv,
     });
     res.send({ status: "successfully" });
 });

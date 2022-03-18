@@ -6,12 +6,18 @@ import jwt from "jsonwebtoken";
 const auth = express.Router();
 
 import "dotenv/config";
+import DonVi from "../model/DonVi.js";
+import BoPhan from "../model/BoPhan.js";
 
 auth.post("/dangnhap", async function (req, res) {
     const body = req.body;
     if (body.manv !== undefined && body.matkhau !== undefined) {
         console.log(body.manv);
         const user = await NhanVien.findOne({
+            include: [
+                { model: DonVi, require: true },
+                { model: BoPhan, required: true },
+            ],
             where: {
                 manv: body.manv,
             },
@@ -38,10 +44,15 @@ auth.post("/dangnhap", async function (req, res) {
                     access_token: access_token,
                     manv: body.manv,
                     quyen: user.getDataValue("quyen"),
+                    bophan: user.BoPhan.getDataValue("tenbp"),
+                    donvi: user.donvi.getDataValue("madv"),
                 });
                 return;
             } else {
-                res.send({ status: "failed", message: "Mật khẩu không chính xác!" });
+                res.send({
+                    status: "failed",
+                    message: "Mật khẩu không chính xác!",
+                });
             }
         } else {
             res.send({ status: "failed", message: "Tài khoản không tồn tại!" });

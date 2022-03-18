@@ -1,13 +1,13 @@
 import sequelize from "./db.js";
 import { DataTypes } from "sequelize";
-import BoPhan from "./BoPhan.js"
-import NhanVien from "./NhanVien.js"
-import LoaiCV from "./LoaiCV.js"
-import TT_BoSung from "./TT_BoSung.js"
-import ToChucBenNgoai from "./ToChucBenNgoai.js"
-import LinhVuc from "./LinhVuc.js"
+import BoPhan from "./BoPhan.js";
+import NhanVien from "./NhanVien.js";
+import LoaiCV from "./LoaiCV.js";
+import TT_BoSung from "./TT_BoSung.js";
+import ToChucBenNgoai from "./ToChucBenNgoai.js";
+import LinhVuc from "./LinhVuc.js";
 import DonVi from "./DonVi.js";
-import SoCV from "./SoCV.js"
+import SoCV from "./SoCV.js";
 
 const CVDi = sequelize.define(
     "CVDi",
@@ -115,6 +115,9 @@ CVDi.belongsTo(LinhVuc, {
 
 CVDi.belongsTo(LoaiCV, {
     foreignKey: "maloai",
+});
+CVDi.belongsTo(NhanVien, {
+    foreignKey: "manv",
 });
 
 await CVDi.sync();
