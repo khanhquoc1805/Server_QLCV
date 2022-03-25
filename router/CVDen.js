@@ -111,6 +111,50 @@ cvden.get("", async function (req, res) {
     // }
 });
 
+cvden.get("/:macvden", async function (req, res) {
+    const macvden = req.params.macvden;
+    if (macvden == null) {
+        res.send({ status: "error" });
+        return;
+    }
+    const data = await CVDen.findOne({
+        where: {
+            macvden: macvden,
+        },
+    });
+
+    if (data) {
+        const loaicv = await LoaiCV.findOne({
+            where: {
+                maloai: data.getDataValue("maloai"),
+            },
+        });
+        const  linhvuc = await LinhVuc.findOne({
+            where: {
+                malv: data.getDataValue("malv"),
+            },
+        });
+        const ttbosung = await TT_BoSung.findOne({
+            where: data.getDataValue("matt"),
+        });
+        const donvi = await DonVi.findOne({
+            where: {
+                madv: data.getDataValue("madv"),
+            },
+        });
+        res.send({
+            status: "successfully",
+            cvden: data,
+            loaicv: loaicv,
+            linhvuc: linhvuc,
+            ttbosung: ttbosung,
+            donvi: donvi,
+        });
+    } else {
+        res.send({ status: "failed" });
+    }
+});
+
 cvden.post("/add", async function (req, res) {
     const madv = req.body.madv;
     const maloai = req.body.maloai;

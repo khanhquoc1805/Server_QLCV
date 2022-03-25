@@ -44,6 +44,12 @@ insert into loaicv(tenloai) values("Nghị Quyết");
 
 
 
+select * from nhanvien;
+
+alter table nhanvien add madv int;
+alter table nhanvien add foreign key(madv) references donvi(madv);
+update nhanvien set madv=1 where manv="b1809283";
+
 select * from loaicv;
 select * from donvi;
 select * from linhvuc;
