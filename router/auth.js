@@ -35,6 +35,7 @@ auth.post("/dangnhap", async function (req, res) {
                     {
                         manv: body.manv,
                         quyen: user.getDataValue("quyen"),
+                        donvi: user.donvi.getDataValue("madv"),
                     },
                     process.env.JWT_SECRET || "",
                     { expiresIn: "1h" }

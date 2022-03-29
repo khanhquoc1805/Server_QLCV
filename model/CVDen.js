@@ -65,13 +65,6 @@ const CVDen = sequelize.define(
                 key: "mabp",
             },
         },
-        manv: {
-            type: DataTypes.STRING,
-            references: {
-                model: NhanVien,
-                key: "manv",
-            },
-        },
         masocv: {
             type: DataTypes.STRING,
             references: {

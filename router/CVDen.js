@@ -13,9 +13,9 @@ const cvden = express.Router();
 
 cvden.get("", async function (req, res) {
     //console.log("asj")
-    const { limit, page, status, textSearch } = req.query;
+    const { limit, page, status, textSearch, madv } = req.query;
     let data = [];
-
+    console.log(madv);
     const limitInt = parseInt(limit);
     const pageInt = parseInt(page);
 
@@ -23,6 +23,7 @@ cvden.get("", async function (req, res) {
         res.send({ status: "failed" });
         return;
     }
+
     let temp = await CVDen.findAll({
         include: [
             {
@@ -42,6 +43,9 @@ cvden.get("", async function (req, res) {
                 required: true,
             },
         ],
+        where: {
+            madv: madv || 0,
+        },
     });
     if (status) {
         const statusList = status.split(",");
@@ -129,7 +133,7 @@ cvden.get("/:macvden", async function (req, res) {
                 maloai: data.getDataValue("maloai"),
             },
         });
-        const  linhvuc = await LinhVuc.findOne({
+        const linhvuc = await LinhVuc.findOne({
             where: {
                 malv: data.getDataValue("malv"),
             },
@@ -175,8 +179,8 @@ cvden.post("/add", async function (req, res) {
     const malv = req.body.malv;
     const hanxuli = req.body.hanxuli;
     const noinhan = req.body.noinhan;
-    console.log(req.body);
-    console.log(req.files?.dinhkem);
+    // console.log(req.body);
+    // console.log(req.files?.dinhkem);
 
     if (
         !madv ||

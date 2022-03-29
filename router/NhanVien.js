@@ -58,4 +58,15 @@ nhanvien.post("", async function (req, res) {
     res.send(nv);
 });
 
+nhanvien.get("/:madv", async function (req, res) {
+    const madv = req.params.madv;
+    const data = await NhanVien.findAll({
+        where: {
+            madv: madv,
+        },
+        attributes: ["manv", "tennv"],
+    });
+    res.send(data);
+});
+
 export default nhanvien;

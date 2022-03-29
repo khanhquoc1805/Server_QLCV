@@ -18,8 +18,8 @@ import cvdi from "./router/CVDi.js";
 // import CVDen from "./model/CVDen.js"
 import donvi from "./router/DonVi.js";
 import loaicv from "./router/LoaiCV.js";
-import CVDi from "./model/CVDi.js";
-import CVDen from "./model/CVDen.js";
+import XuLy from "./model/XuLy.js"
+import xuly from "./router/XuLy.js";
 
 app.use(cors());
 app.use(express.json());
@@ -37,6 +37,7 @@ app.use("/linhvuc", linhvuc);
 app.use("/cvdi", cvdi);
 app.use("/donvi", donvi);
 app.use("/loaicv", loaicv);
+app.use("/xuly",xuly);
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
