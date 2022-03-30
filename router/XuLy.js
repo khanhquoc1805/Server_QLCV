@@ -1,4 +1,5 @@
 import express from "express";
+import CVDen from "../model/CVDen.js";
 import NhanVien from "../model/NhanVien.js";
 import XuLy from "../model/XuLy.js";
 
@@ -15,7 +16,7 @@ xuly.post("/add", async function (req, res) {
     const hanxulykethop = req.body.hanxulykethop;
 
     if (macvden == null || maxulychinh == null) {
-        res.send({ status: "failed" });
+        res.send({ status: "failed", massage: "" });
         return;
     }
     try {
@@ -38,9 +39,12 @@ xuly.post("/add", async function (req, res) {
             });
         }
 
-        res.send({ status: "successfully" });
+        res.send({
+            status: "successfully",
+            massage: "Phân công xử lý thành công",
+        });
     } catch (error) {
-        res.send({ status: "failed" });
+        res.send({ status: "failed", massage: "" });
     }
 });
 
@@ -55,7 +59,7 @@ xuly.get("/:macvden", async function (req, res) {
             macvden: macvden,
         },
     });
-    console.log(data);
+    //console.log(data);
     let result = [];
     for (const record of data) {
         const nv = await NhanVien.findOne({
@@ -79,10 +83,31 @@ xuly.post("/hoanthanhxuly", async function (req, res) {
     const manv = req.body.manv;
     const macvden = req.body.macvden;
     if (manv == null || macvden == null) {
-        res.send({ status: "failed" });
+        res.send({ status: "failed", massage: "" });
         return;
     }
-
+    const nv = await NhanVien.findOne({
+        where: {
+            manv: manv,
+        },
+    });
+    if (nv.getDataValue("quyen") === "lanhdao") {
+        const updateStatus = await CVDen.update(
+            {
+                xuly: "hoanthanhxuly",
+            },
+            {
+                where: {
+                    macvden: macvden,
+                },
+            }
+        );
+        res.send({
+            status: "successfully",
+            massage: "Hoàn thành xử lý công văn thành công!",
+        });
+        return;
+    }
     const kq = await XuLy.findOne({
         where: {
             manv: manv,
@@ -106,8 +131,32 @@ xuly.post("/hoanthanhxuly", async function (req, res) {
         }
     );
 
-    res.send({status: "successfully"});
+    res.send({
+        status: "successfully",
+        massage: "Xử lý công văn thành công!",
+    });
+});
 
+xuly.post("/thongtinxuly/xacnhanquyenxuly", async function (req, res) {
+    const macvden = req.body.macvden;
+    const manv = req.body.manv;
+    console.log(req.body);
+    if (macvden == null || manv == null) {
+        res.send({ status: "failed" });
+        return;
+    }
+    const data = await XuLy.findOne({
+        where: {
+            macvden: macvden,
+            manv: manv,
+        },
+    });
+    console.log(data);
+    if (data == null) {
+        res.send({ status: "failed" });
+        return;
+    }
+    res.send({ status: "successfully", xuly: data });
 });
 
 export default xuly;

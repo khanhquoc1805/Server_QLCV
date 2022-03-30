@@ -6,7 +6,7 @@ insert into socv values ("nd","Nghị Định","Sổ Văn Bản Đi","Phòng K�
 
 select * from socv;
 
-drop table xuly;
+
 delete from socv where masocv="VPDT";
 
 select * from cvden;
@@ -16,9 +16,12 @@ select * from tt_bosung;
 
 select * from xuly;
 
+update nhanvien set quyen = "canbo" where manv="quocquoc";
+update cvden set xuly="chuaxuly" where macvden = 1;
+
 delete from xuly where manv != "q";
 
-update xuly set trangthai ="hoanthanhxuly" where manv="c0928";
+update xuly set trangthai ="chuaxuly" where macvden=1;
 update tt_bosung set dinhkem="https://doc-08-30-docs.googleusercontent.com/docs/securesc/v4epsnk7lejn7ls304gg5qajrvu1p7m5/qkghhadtsr48fqu4amg1pfghflhhdkea/1647333375000/08599017269250487586/08599017269250487586/1fwZjBQoRHQHN896UHIZfiGrJLDlIkjsI?e=download&ax=ACxEAsZO4vnAkw_xLcFI_jHfXv6-TReer4raHwhcjIppo4t2mjsS1z6BJgWgHAwnEY8ZxVaNpzi_lvJXzN2dW7GnPQXtIHlU6VZWz79sNZtbxovDQNpITLfwpYZ_ckuKrrF5bzzCNXrvBCnJOkfDHU8rLxzy63wAvauY9k_mPYo9JcwFcSZqNqEKR5OPC7zeaRDx9p8nx5La3SDRd_6Z4ONoVgtHd6qkfDZ2Xvw0c9RRw0a037cu4gWLlt1WMGTIKj8KAc191Bw9Gy2Yo1eCbZgAg1Siqp0JaGc-iLE2Fr4hVASVqVx62vcbDN_6H7tiB8mYEnbBnu9wODE-6kNCvVAXu56Bjk353g14nRWjoD8giwfdBtBTtgCgJVPMb5lQx6fhDWL-m9_LfXQpSWm0N_kekdkwBLtHXw_51QYVtgUV3leXhzIXbKcTBxlBqyC_6OHGS5B4HH8yL0cYF47W8jzJQL6CskyyP8YZMLYSEzITIB9aHqd1P-eZeHok2F7YWkJVnikg4NpRkhzAeYfGOneOZgjJA4q0BNd7BTISNZmHodnKzShNdlxRKED_Xmw8tv7OXqMCtJ5-KMGIwgQWQ_xxCgWpf-G2mRpv-0WwbGfBprhA-rDxBvLV68EmnYltjTncn0bqwo3Mt_5kbSrKP6ASmvWaup5A0QY2Kb-JwhsL&authuser=0&nonce=56f5prcla7hk8&user=08599017269250487586&hash=sbfq5o6us8ptpepd22gvciroknsuek01" where matt=45;
 
 delete from tt_bosung where matt!=46;

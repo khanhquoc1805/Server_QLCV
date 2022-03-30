@@ -28,6 +28,7 @@ app.use(
         createParentPath: true,
     })
 );
+app.use("/xuly",xuly);
 app.use("/socv", socv);
 app.use("/auth", auth);
 app.use("/cvden", cvden);
@@ -37,7 +38,7 @@ app.use("/linhvuc", linhvuc);
 app.use("/cvdi", cvdi);
 app.use("/donvi", donvi);
 app.use("/loaicv", loaicv);
-app.use("/xuly",xuly);
+
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
