@@ -15,7 +15,7 @@ cvden.get("", async function (req, res) {
     //console.log("asj")
     const { limit, page, status, textSearch, madv } = req.query;
     let data = [];
-    console.log(madv);
+    //console.log(madv);
     const limitInt = parseInt(limit);
     const pageInt = parseInt(page);
 

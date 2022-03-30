@@ -2,7 +2,7 @@ import express from "express";
 import BoPhan from "../model/BoPhan.js";
 import DonVi from "../model/DonVi.js";
 import NhanVien from "../model/NhanVien.js";
-
+import bcrypt from "bcryptjs";
 
 var user = express.Router();
 
@@ -50,6 +50,58 @@ user.get("", async function (req, res) {
     };
 
     res.send({ data: result, pagination });
+});
+
+user.post("/add", async function (req, res) {
+    const { manv, tennv, ngaysinh, diachi, sdt, chucvu, matkhau, quyen, madv } =
+        req.body;
+
+    if (
+        manv == null ||
+        tennv == null ||
+        ngaysinh == null ||
+        diachi == null ||
+        sdt == null ||
+        chucvu == null ||
+        matkhau == null ||
+        quyen == null ||
+        madv == null
+    ) {
+        res.send({ status: "failed", massage: "" });
+        return;
+    }
+
+    const user = await NhanVien.findOne({
+        where: {
+            manv: manv,
+        },
+    });
+
+    if (user) {
+        res.send({ status: "failed", massage: "Mã người dùng đã tồn tại!" });
+        return;
+    }
+
+    const salt = await bcrypt.genSalt(12);
+    const hashpassword = await bcrypt.hash(matkhau, salt);
+    console.log(ngaysinh);
+    const ngaysinhInsert = new Date(ngaysinh);
+    ngaysinhInsert.setDate(ngaysinhInsert.getDate() + 1);
+    const insertUser = await NhanVien.create({
+        manv: manv,
+        tennv: tennv,
+        ngaysinh: ngaysinhInsert,
+        diachi: diachi,
+        sdt: sdt,
+        chucvu: chucvu,
+        matkhau: hashpassword,
+        quyen: quyen,
+        madv: madv,
+    });
+    res.send({
+        status: "successfully",
+        massage: "Thêm người dùng thành công!",
+    });
 });
 
 export default user;
