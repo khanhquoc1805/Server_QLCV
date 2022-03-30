@@ -20,6 +20,7 @@ import donvi from "./router/DonVi.js";
 import loaicv from "./router/LoaiCV.js";
 import XuLy from "./model/XuLy.js"
 import xuly from "./router/XuLy.js";
+import user from "./router/User.js";
 
 app.use(cors());
 app.use(express.json());
@@ -38,6 +39,7 @@ app.use("/linhvuc", linhvuc);
 app.use("/cvdi", cvdi);
 app.use("/donvi", donvi);
 app.use("/loaicv", loaicv);
+app.use("/user",user);
 
 
 cloudinary.v2.config({
