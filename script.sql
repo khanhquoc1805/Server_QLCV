@@ -9,12 +9,16 @@ select * from socv;
 
 delete from socv where masocv="VPDT";
 
+
+select * from noinhancvdi;
 select * from cvden;
+
 select * from nhanvien;
 select * from bophan;
 select * from cvdi;
 select * from tt_bosung;
-
+select * from noinhancvdi;
+select * from xulycvdi;
 delete from nhanvien where manv="c121";
 
 select * from xuly;
@@ -69,16 +73,18 @@ alter table nhanvien add madv int;
 alter table nhanvien add foreign key(madv) references donvi(madv);
 update nhanvien set madv=1 where manv="b1809283";
 
-select * from loaicv;
+select * from noinhancvdi;
+select * from xulycvdi;
 select * from donvi;
 select * from linhvuc;
 drop table cvdi;
-drop table cvden;
-drop table tt_bosung;
+drop table noinhancvdi;
+drop table xulycvdi;
+drop table noinhancvdi;
 
-select * from tt_bosung;
+select * from xulycvdi;
 
-delete from linhvuc where malv=11;
+delete from noinhancvdi where madv=2;
 delete from loaicv where maloai=6;
 
 select * from cvdi join donvi on cvdi.madv=donvi.madv;

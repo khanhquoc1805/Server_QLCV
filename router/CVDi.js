@@ -128,6 +128,61 @@ cvdi.get("", async function (req, res) {
     res.send({ data: result, pagination });
 });
 
+cvdi.get("/:mavbdi", async function (req, res) {
+    const mavbdi = req.params.mavbdi;
+    if (mavbdi == null) {
+        res.send({ status: "error" });
+        return;
+    }
+
+    const data = await CVDi.findOne({
+        where: {
+            mavbdi: mavbdi,
+        },
+    });
+
+    if (data) {
+        const ttbosung = await TT_BoSung.findOne({
+            where: {
+                matt: data.getDataValue("matt"),
+            },
+        });
+        const loaiCV = await LoaiCV.findOne({
+            where: {
+                maloai: data.getDataValue("maloai"),
+            },
+        });
+
+        const linhVuc = await LinhVuc.findOne({
+            where: {
+                malv: data.getDataValue("malv"),
+            },
+        });
+        const noinhan = await NoiNhanCVDi.findOne({
+            where: {
+                mavbdi: data.getDataValue("mavbdi"),
+                ghichu: "gui",
+            },
+        });
+
+        const donvi = await DonVi.findOne({
+            where: {
+                madv: noinhan.getDataValue("madv"),
+            },
+        });
+
+        res.send({
+            cvdi: data,
+            ttbosung: ttbosung,
+            loaicv: loaiCV,
+            donvi: donvi,
+            linhvuc: linhVuc,
+        });
+    } else {
+        res.send({ status: "failed" });
+    }
+});
+
 cvdi.post("/add", async function (req, res) {
     const body = req.body;
     const dinhkem = req.files.dinhkem;
