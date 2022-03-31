@@ -9,16 +9,20 @@ import cloudinary from "cloudinary";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
 import NhanVien from "../model/NhanVien.js";
+import NoiNhanCVDi from "../model/NoiNhanCVDi.js";
+import XulyCVDi from "../model/XuLyCVDi.js";
 
 const cvdi = express.Router();
 
 cvdi.get("", async function (req, res) {
-    const { limit, page, status, textSearch } = req.query;
+    const { limit, page, status, textSearch, madv } = req.query;
     let data = [];
+
+    console.log(madv);
 
     const limitInt = parseInt(limit);
     const pageInt = parseInt(page);
-    if (!limit || !page) {
+    if (!limit || !page || !madv) {
         res.send({ status: "failed" });
         return;
     }
@@ -26,10 +30,6 @@ cvdi.get("", async function (req, res) {
     // get all cong van di
     let temp = await CVDi.findAll({
         include: [
-            {
-                model: DonVi,
-                required: true,
-            },
             {
                 model: LinhVuc,
                 required: true,
@@ -53,13 +53,6 @@ cvdi.get("", async function (req, res) {
         temp = temp.filter((cvdi) => {
             return (
                 removeVietnameseTones(cvdi.getDataValue("tenvbdi"))
-                    .toLowerCase()
-                    .includes(
-                        removeVietnameseTones(textSearch).toLowerCase()
-                    ) ||
-                removeVietnameseTones(
-                    cvdi.getDataValue("donvi").getDataValue("tendv")
-                )
                     .toLowerCase()
                     .includes(
                         removeVietnameseTones(textSearch).toLowerCase()
@@ -90,11 +83,6 @@ cvdi.get("", async function (req, res) {
                 matt: record.getDataValue("matt"),
             },
         });
-        const donVi = await DonVi.findOne({
-            where: {
-                madv: record.getDataValue("madv"),
-            },
-        });
         const loaiCV = await LoaiCV.findOne({
             where: {
                 maloai: record.getDataValue("maloai"),
@@ -106,11 +94,29 @@ cvdi.get("", async function (req, res) {
                 malv: record.getDataValue("malv"),
             },
         });
+        const noinhan = await NoiNhanCVDi.findOne({
+            where: {
+                mavbdi: record.getDataValue("mavbdi"),
+                madv: madv,
+                ghichu: "gui",
+            },
+        });
+        let donvi;
+        if (!noinhan) {
+            donvi = { madv: 0, tendv: "" };
+        } else {
+            donvi = await DonVi.findOne({
+                where: {
+                    madv: noinhan.getDataValue("madv"),
+                },
+            });
+        }
+
         result.push({
             cvdi: record,
             ttbosung: ttbosung,
-            donvi: donVi,
             loaicv: loaiCV,
+            donvi: donvi,
             linhvuc: linhVuc,
         });
     }
@@ -172,7 +178,6 @@ cvdi.post("/add", async function (req, res) {
         domat,
     });
     const savedCvdi = await CVDi.create({
-        madv,
         maloai,
         tenvbdi,
         ngayravbdi: ngayravbdiInsert,
@@ -180,7 +185,16 @@ cvdi.post("/add", async function (req, res) {
         malv,
         matt: tt_bosung.getDataValue("matt"),
         ttxuly: "chuaxuly",
-        manv,
+    });
+    const noinhancvdi = NoiNhanCVDi.create({
+        mavbdi: savedCvdi.getDataValue("mavbdi"),
+        madv: madv,
+        ghichu: "gui",
+    });
+    const insertNVDuThao = await XulyCVDi.create({
+        manv: manv,
+        mavbdi: savedCvdi.getDataValue("mavbdi"),
+        vaitro: "duthao",
     });
     res.send({ status: "successfully" });
 });

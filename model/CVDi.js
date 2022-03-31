@@ -47,13 +47,6 @@ const CVDi = sequelize.define(
                 key: "mabp",
             },
         },
-        manv: {
-            type: DataTypes.STRING,
-            references: {
-                model: NhanVien,
-                key: "manv",
-            },
-        },
         masocv: {
             type: DataTypes.STRING,
             references: {
@@ -89,13 +82,6 @@ const CVDi = sequelize.define(
                 key: "malv",
             },
         },
-        madv: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: DonVi,
-                key: "madv",
-            },
-        },
     },
     {
         timestamps: false,
@@ -103,12 +89,6 @@ const CVDi = sequelize.define(
     }
 );
 
-DonVi.hasOne(CVDi, {
-    foreignKey: "madv",
-});
-CVDi.belongsTo(DonVi, {
-    foreignKey: "madv",
-});
 CVDi.belongsTo(LinhVuc, {
     foreignKey: "malv",
 });
@@ -119,6 +99,7 @@ CVDi.belongsTo(LoaiCV, {
 CVDi.belongsTo(NhanVien, {
     foreignKey: "manv",
 });
+
 
 await CVDi.sync();
 

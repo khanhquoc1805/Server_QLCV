@@ -16,9 +16,14 @@ import cvdi from "./router/CVDi.js";
 //import DonVi from "./model/DonVi.js"
 // import TT_BoSung from "./model/TT_BoSung.js"
 // import CVDen from "./model/CVDen.js"
+
+import CVDi from "./model/CVDi.js";
+import NoiNhanCVDi from "./model/NoiNhanCVDi.js";
+import XuLyCVDi from "./model/XuLyCVDi.js";
+
 import donvi from "./router/DonVi.js";
 import loaicv from "./router/LoaiCV.js";
-import XuLy from "./model/XuLy.js"
+import XuLy from "./model/XuLy.js";
 import xuly from "./router/XuLy.js";
 import user from "./router/User.js";
 
@@ -29,7 +34,7 @@ app.use(
         createParentPath: true,
     })
 );
-app.use("/xuly",xuly);
+app.use("/xuly", xuly);
 app.use("/socv", socv);
 app.use("/auth", auth);
 app.use("/cvden", cvden);
@@ -39,8 +44,7 @@ app.use("/linhvuc", linhvuc);
 app.use("/cvdi", cvdi);
 app.use("/donvi", donvi);
 app.use("/loaicv", loaicv);
-app.use("/user",user);
-
+app.use("/user", user);
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,

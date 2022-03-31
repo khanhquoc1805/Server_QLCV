@@ -11,8 +11,11 @@ delete from socv where masocv="VPDT";
 
 select * from cvden;
 select * from nhanvien;
+select * from bophan;
 select * from cvdi;
 select * from tt_bosung;
+
+delete from nhanvien where manv="c121";
 
 select * from xuly;
 
