@@ -11,6 +11,7 @@ import fs from "fs";
 import NhanVien from "../model/NhanVien.js";
 import NoiNhanCVDi from "../model/NoiNhanCVDi.js";
 import XulyCVDi from "../model/XuLyCVDi.js";
+import XuLyCVDi from "../model/XuLyCVDi.js";
 
 const cvdi = express.Router();
 
@@ -276,6 +277,25 @@ cvdi.post("/xulytrangthai/:mavbdi", async function (req, res) {
         return;
     }
     res.send({ status: "successfully" });
+});
+
+cvdi.post("/chuyenxuly", async function (req, res) {
+    const { nguoinhan, butphechuyen, hanxuly, mavbdi } = req.body;
+    if (nguoinhan === null || mavbdi == null) {
+        res.send({ status: "failed", massage: "lỗi chưa xác định" });
+        return;
+    }
+    const hanxulyInsert = new Date(hanxuly);
+    hanxulyInsert.setDate(hanxulyInsert.getDate() + 1);
+    const insertXuLy = await XuLyCVDi.create({
+        mavbdi: mavbdi,
+        manv: nguoinhan,
+        trangthai: "chuaxuly",
+        butphe: butphechuyen,
+        hanxuly: hanxulyInsert,
+        vaitro: "xuly",
+    });
+    res.send({ status: "successfully", massage: "Chuyển xử lý thành công!" });
 });
 
 cvdi.post("/themvaoso/:mavbdi", async function (req, res) {
