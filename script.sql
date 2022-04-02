@@ -23,8 +23,11 @@ delete from nhanvien where manv="c121";
 
 select * from xuly;
 
-update nhanvien set quyen = "canbo" where manv="quocquoc";
+update nhanvien set madv = 3 where manv="canbo1";
 update cvden set xuly="chuaxuly" where macvden = 1;
+update xulycvdi set trangthai=null where manv="c0928";
+
+update cvdi set ttxuly="chuaxuly" where mavbdi=1;
 
 delete from xuly where manv != "q";
 
@@ -43,6 +46,8 @@ insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp) values("c0928","Khán
 insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp) values("canbo1","Cán Bộ 1","Quản Trị Hệ Thống","$2a$12$z/1IWfmN/HzPgsz2U1LP1OYoX1avDSeWklf83rHVPaky//mKmhjUK","vanthu","ql");
 insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp) values("canbo2","Cán Bộ 2","Quản Trị Hệ Thống","$2a$12$7IPrRR0TnN886WESk2hRKunDIizDUMKn02T13yMTMfcxnVRnBh6r2","vanthu","ql");
 
+
+insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp,madv) values("canbo2","Cán Bộ 2","Quản Trị Hệ Thống","$2a$12$7IPrRR0TnN886WESk2hRKunDIizDUMKn02T13yMTMfcxnVRnBh6r2","vanthu","ql");
 insert into cvden(macvden,tencvden,matt) values ("1","Đây là công văn test API",1);
 insert into tt_bosung values(1,3,"Bình Thường","Bình Thường","Không có ghi chú thêm");
 

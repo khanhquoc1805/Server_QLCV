@@ -113,12 +113,27 @@ cvdi.get("", async function (req, res) {
             });
         }
 
+        const canbo = await XuLyCVDi.findOne({
+            where: {
+                mavbdi: record.getDataValue("mavbdi"),
+                vaitro: "duthao",
+            },
+        }); // tim ma can bo du thao
+
+        const duthao = await NhanVien.findOne({
+            attributes: ["tennv"],
+            where: {
+                manv: canbo.getDataValue("manv"),
+            },
+        }); // tim ten can bo du thao
+
         result.push({
             cvdi: record,
             ttbosung: ttbosung,
             loaicv: loaiCV,
             donvi: donvi,
             linhvuc: linhVuc,
+            duthao: duthao,
         });
     }
     const pagination = {
@@ -255,29 +270,29 @@ cvdi.post("/add", async function (req, res) {
     res.send({ status: "successfully" });
 });
 
-cvdi.post("/xulytrangthai/:mavbdi", async function (req, res) {
-    const mavbdi = parseInt(req.params.mavbdi);
+// cvdi.post("/xulytrangthai/:mavbdi", async function (req, res) {
+//     const mavbdi = parseInt(req.params.mavbdi);
 
-    if (Number.isNaN(mavbdi)) {
-        res.send({ status: "failed" });
-        return;
-    }
-    const cvdi = await CVDi.update(
-        {
-            ttxuly: "daduyet",
-        },
-        {
-            where: {
-                mavbdi: mavbdi,
-            },
-        }
-    );
-    if (cvdi <= 0) {
-        res.send({ status: "failed" });
-        return;
-    }
-    res.send({ status: "successfully" });
-});
+//     if (Number.isNaN(mavbdi)) {
+//         res.send({ status: "failed" });
+//         return;
+//     }
+//     const cvdi = await CVDi.update(
+//         {
+//             ttxuly: "daduyet",
+//         },
+//         {
+//             where: {
+//                 mavbdi: mavbdi,
+//             },
+//         }
+//     );
+//     if (cvdi <= 0) {
+//         res.send({ status: "failed" });
+//         return;
+//     }
+//     res.send({ status: "successfully" });
+// });
 
 cvdi.post("/chuyenxuly", async function (req, res) {
     const { nguoinhan, butphechuyen, hanxuly, mavbdi } = req.body;
@@ -321,6 +336,117 @@ cvdi.post("/themvaoso/:mavbdi", async function (req, res) {
         return;
     }
     res.send({ status: "successfully" });
+});
+
+cvdi.post("/thongtinxuly/xacnhanquyenxuly", async function (req, res) {
+    const { mavbdi, manv } = req.body;
+    if (mavbdi == null || manv == null) {
+        res.send({ status: "failed" });
+        return;
+    }
+    console.log(req.body);
+    const per = await XuLyCVDi.findOne({
+        where: {
+            manv: manv,
+            mavbdi: mavbdi,
+            vaitro: "xuly",
+        },
+    });
+    console.log(per);
+    if (!per) {
+        res.send({ status: "failed" });
+        return;
+    }
+    res.send({ status: "successfully", xuly: per });
+});
+
+cvdi.post("/hoanthanhxuly", async function (req, res) {
+    const { manv, mavbdi } = req.body;
+    if (manv == null || mavbdi == null) {
+        res.send({ status: "failed", massage: "" });
+        return;
+    }
+    const nv = await NhanVien.findOne({
+        where: {
+            manv: manv,
+        },
+    });
+
+    if (nv.getDataValue("quyen") === "lanhdao") {
+        const updateStatus = await CVDi.update(
+            {
+                ttxuly: "hoanthanhxuly",
+            },
+            {
+                where: {
+                    mavbdi: mavbdi,
+                },
+            }
+        );
+
+        res.send({
+            status: "successfully",
+            massage: "Hoàn thành xử lý công văn thành công!",
+        });
+        return;
+    }
+
+    const kq = await XulyCVDi.findOne({
+        where: {
+            mavbdi: mavbdi,
+            manv: manv,
+            vaitro: "xuly",
+        },
+    });
+
+    if (kq == null) {
+        res.send({ status: "failed", error: "Bạn không có quyền xử lý" });
+        return;
+    }
+
+    const updateStatus = await XulyCVDi.update(
+        {
+            trangthai: "hoanthanhxuly",
+        },
+        {
+            where: {
+                mavbdi: mavbdi,
+                manv: manv,
+            },
+        }
+    );
+
+    res.send({
+        status: "successfully",
+        massage: "Xử lý công văn thành công!",
+    });
+});
+
+cvdi.get("/thongtin/:mavbdi", async function (req, res) {
+    const mavbdi = req.params.mavbdi;
+    if (mavbdi == null) {
+        res.send({ status: "failed" });
+        return;
+    }
+    const data = await XuLyCVDi.findAll({
+        where: {
+            mavbdi: mavbdi,
+            vaitro: "xuly",
+        },
+    });
+    let result = [];
+    for (const record of data) {
+        const nv = await NhanVien.findOne({
+            attributes: ["tennv", "chucvu"],
+            where: {
+                manv: record.getDataValue("manv"),
+            },
+        });
+        console.log(nv);
+        result.push({ xuly: record, nv: nv });
+    }
+
+    res.send(result);
 });
 
 export default cvdi;
