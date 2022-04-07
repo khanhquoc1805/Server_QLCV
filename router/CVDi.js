@@ -12,6 +12,7 @@ import NhanVien from "../model/NhanVien.js";
 import NoiNhanCVDi from "../model/NoiNhanCVDi.js";
 import XulyCVDi from "../model/XuLyCVDi.js";
 import XuLyCVDi from "../model/XuLyCVDi.js";
+import CVDen from "../model/CVDen.js";
 
 const cvdi = express.Router();
 
@@ -447,6 +448,65 @@ cvdi.get("/thongtin/:mavbdi", async function (req, res) {
     }
 
     res.send(result);
+});
+
+cvdi.post("/themnoinhan", async function (req, res) {
+    const { mavbdi, dsnoinhan } = req.body;
+    console.log(req.body);
+
+    if (mavbdi == null || dsnoinhan == null) {
+        res.send({ status: "failed", massage: "" });
+        return;
+    }
+    const data = await CVDi.findOne({
+        where: {
+            mavbdi: mavbdi,
+        },
+    });
+    for (const madv of dsnoinhan) {
+        //console.log(madv);
+        const add = await NoiNhanCVDi.create({
+            mavbdi: mavbdi,
+            madv: madv,
+            ghichu: "nhan",
+        });
+        const noibanhanh = await NoiNhanCVDi.findOne({
+            where: {
+                mavbdi: mavbdi,
+                ghichu: "gui",
+            },
+        });
+        console.log(noibanhanh);
+        const tennoibanhanh = await DonVi.findOne({
+            where: {
+                madv: noibanhanh.getDataValue("madv"),
+            },
+        });
+        const ngaybh = new Date();
+        const insertCvCungHeThong = await CVDen.create({
+            tencvden: data.getDataValue("tenvbdi"),
+            ngaybanhanh: ngaybh,
+            ngaycvden: data.getDataValue("ngayvbdi"),
+            xuly: "chotiepnhan",
+            coquanbanhanh: tennoibanhanh.getDataValue("tendv"),
+            maloai: data.getDataValue("maloai"),
+            matt: data.getDataValue("matt"),
+            malv: data.getDataValue("malv"),
+            madv: madv,
+        });
+    }
+    const vbdi = await CVDi.update(
+        {
+            ttxuly: "daphathanh",
+        },
+        {
+            where: {
+                mavbdi: mavbdi,
+            },
+        }
+    );
+
+    res.send({ status: "successfully", massage: "Thành công" });
 });
 
 export default cvdi;

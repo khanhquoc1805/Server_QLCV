@@ -19,7 +19,7 @@ select * from cvdi;
 select * from tt_bosung;
 select * from noinhancvdi;
 select * from xulycvdi;
-delete from nhanvien where manv="c121";
+delete from noinhancvdi where mavbdi=1 and madv=3;
 
 select * from xuly;
 
