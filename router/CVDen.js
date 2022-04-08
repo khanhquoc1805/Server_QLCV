@@ -8,6 +8,7 @@ import TT_BoSung from "../model/TT_BoSung.js";
 import cloudinary from "cloudinary";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
+import NhanVien from "../model/NhanVien.js";
 
 const cvden = express.Router();
 
@@ -81,6 +82,7 @@ cvden.get("", async function (req, res) {
                 malv: record.getDataValue("malv"),
             },
         });
+
         result.push({
             cvden: record,
             ttbosung: ttbosung,
@@ -248,4 +250,25 @@ cvden.post("/add", async function (req, res) {
     });
     res.send({ status: "successfully" });
 });
+
+cvden.post("/tiepnhanvanbancunghethong", async function (req, res) {
+    const { macvden } = req.body;
+    console.log(req.body);
+    if (macvden == null) {
+        res.send({ status: "failed", massage: "" });
+        return;
+    }
+    const updateTT = await CVDen.update(
+        {
+            xuly: "chuaxuly",
+        },
+        {
+            where: {
+                macvden: macvden,
+            },
+        }
+    );
+    res.send({ status: "successfully", massage: "Tiếp nhận thành công" });
+});
+
 export default cvden;

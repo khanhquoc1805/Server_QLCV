@@ -31,7 +31,7 @@ const CVDi = sequelize.define(
         ngayvaoso: {
             type: DataTypes.DATE,
         },
-        nhanxuly: {
+        nguoiky: {
             type: DataTypes.STRING,
         },
         ghichu: {

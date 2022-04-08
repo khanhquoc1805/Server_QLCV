@@ -385,6 +385,19 @@ cvdi.post("/hoanthanhxuly", async function (req, res) {
             }
         );
 
+        const updateNguoiKy = await CVDi.update(
+            {
+                nguoiky: `${nv.getDataValue("tennv")}/${nv.getDataValue(
+                    "chucvu"
+                )}`,
+            },
+            {
+                where: {
+                    mavbdi: mavbdi,
+                },
+            }
+        );
+
         res.send({
             status: "successfully",
             massage: "Hoàn thành xử lý công văn thành công!",
@@ -493,6 +506,7 @@ cvdi.post("/themnoinhan", async function (req, res) {
             matt: data.getDataValue("matt"),
             malv: data.getDataValue("malv"),
             madv: madv,
+            nguoiky: data.getDataValue("nguoiky"),
         });
     }
     const vbdi = await CVDi.update(

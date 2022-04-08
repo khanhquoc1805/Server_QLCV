@@ -13,21 +13,33 @@ delete from socv where masocv="VPDT";
 select * from noinhancvdi;
 select * from cvden;
 
+delete from tt_bosung where matt!=61;
+
+
 select * from nhanvien;
+select * from xuly;
 select * from bophan;
 select * from cvdi;
 select * from tt_bosung;
 select * from noinhancvdi;
 select * from xulycvdi;
-delete from noinhancvdi where mavbdi=1 and madv=3;
+delete from noinhancvdi where mavbdi=1 and madv=1;
+
+update cvden set nguoiky="Nguyen Van A / Hiệu Phó" where macvden!=1;
+
+drop table xulycvdi;
+drop table noinhancvdi;
+drop table cvdi;
 
 select * from xuly;
+
+update cvdi set ttxuly = "davaoso" where mavbdi=1;
 
 update nhanvien set madv = 3 where manv="canbo1";
 update cvden set xuly="chuaxuly" where macvden = 1;
 update xulycvdi set trangthai=null where manv="c0928";
 
-update cvdi set ttxuly="chuaxuly" where mavbdi=1;
+update cvdi set ttxuly="hoanthanhxuly" where mavbdi=1;
 
 delete from xuly where manv != "q";
 
@@ -72,7 +84,7 @@ select * from bophan;
 
 select * from nhanvien where madv=1;
 
-update nhanvien set madv=1 where manv="c0928";
+update nhanvien set quyen="lanhdao" where manv="b1809283";
 
 alter table nhanvien add madv int;
 alter table nhanvien add foreign key(madv) references donvi(madv);
