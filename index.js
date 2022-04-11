@@ -1,31 +1,24 @@
-import express from "express";
-import cors from "cors";
-import fileUpload from "express-fileupload";
 import cloudinary from "cloudinary";
+import cors from "cors";
 import "dotenv/config";
+import express from "express";
+import fileUpload from "express-fileupload";
+import auth from "./router/auth.js";
+import bophan from "./router/BoPhan.js";
+import cvden from "./router/CVDen.js";
+import cvdi from "./router/CVDi.js";
+import donvi from "./router/DonVi.js";
+import linhvuc from "./router/LinhVuc.js";
+import loaicv from "./router/LoaiCV.js";
+import nhanvien from "./router/NhanVien.js";
+import socv from "./router/SoCV.js";
+import tracuu from "./router/TraCuu.js";
+import user from "./router/User.js";
+import xuly from "./router/XuLy.js";
 const app = express();
 const port = 8080;
 
-import auth from "./router/auth.js";
-import cvden from "./router/CVDen.js";
-import socv from "./router/SoCV.js";
-import bophan from "./router/BoPhan.js";
-import nhanvien from "./router/NhanVien.js";
-import linhvuc from "./router/LinhVuc.js";
-import cvdi from "./router/CVDi.js";
-//import DonVi from "./model/DonVi.js"
-// import TT_BoSung from "./model/TT_BoSung.js"
-// import CVDen from "./model/CVDen.js"
 
-import CVDi from "./model/CVDi.js";
-import NoiNhanCVDi from "./model/NoiNhanCVDi.js";
-import XuLyCVDi from "./model/XuLyCVDi.js";
-
-import donvi from "./router/DonVi.js";
-import loaicv from "./router/LoaiCV.js";
-import XuLy from "./model/XuLy.js";
-import xuly from "./router/XuLy.js";
-import user from "./router/User.js";
 
 app.use(cors());
 app.use(express.json());
@@ -45,6 +38,7 @@ app.use("/cvdi", cvdi);
 app.use("/donvi", donvi);
 app.use("/loaicv", loaicv);
 app.use("/user", user);
+app.use("/tracuu",tracuu)
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,

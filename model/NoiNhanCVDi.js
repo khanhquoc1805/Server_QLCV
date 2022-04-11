@@ -34,7 +34,9 @@ const NoiNhanCVDi = sequelize.define(
     }
 );
 
-
+CVDi.belongsTo(NoiNhanCVDi, {
+    foreignKey: "mavbdi",
+});
 
 await NoiNhanCVDi.sync();
 

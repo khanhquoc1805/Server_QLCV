@@ -19,22 +19,23 @@ xuly.post("/add", async function (req, res) {
         res.send({ status: "failed", massage: "" });
         return;
     }
+
     try {
         const addXuLyChinh = await XuLy.create({
             macvden: macvden,
             manv: maxulychinh,
             trangthai: "chuaxuly",
             butphe: butphexulychinh,
-            hanxulychinh: hanxulychinh,
+            hanxuly: hanxulychinh,
             vaitro: "xulychinh",
         });
-        if (maxulykethop !== null) {
+        if (maxulykethop) {
             const addXuLyKetHop = await XuLy.create({
                 macvden: macvden,
                 manv: maxulykethop,
                 trangthai: "chuaxuly",
                 butphe: butphexulykethop,
-                hanxulychinh: hanxulykethop,
+                hanxuly: hanxulykethop,
                 vaitro: "xulykethop",
             });
         }
@@ -44,6 +45,7 @@ xuly.post("/add", async function (req, res) {
             massage: "Phân công xử lý thành công",
         });
     } catch (error) {
+        console.log(error);
         res.send({ status: "failed", massage: "" });
     }
 });
