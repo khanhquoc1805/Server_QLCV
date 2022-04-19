@@ -23,17 +23,15 @@ select * from cvdi;
 select * from tt_bosung;
 select * from noinhancvdi;
 select * from xulycvdi;
-delete from noinhancvdi where mavbdi=1 and madv=1;
+delete from noinhancvdi where mavbdi=1 and madv=2;
+delete from xuly where macvden=7;
 
-update cvden set nguoiky="Nguyen Van A / Hiệu Phó" where macvden!=1;
+update cvden set xuly="chuaxuly" where macvden=7;
 
-drop table xulycvdi;
-drop table noinhancvdi;
-drop table cvdi;
 
 select * from xuly;
 
-update cvdi set ttxuly = "davaoso" where mavbdi=1;
+update cvdi set ttxuly = "chuaxuly" where mavbdi=1;
 
 update nhanvien set madv = 3 where manv="canbo1";
 update cvden set xuly="chuaxuly" where macvden = 1;

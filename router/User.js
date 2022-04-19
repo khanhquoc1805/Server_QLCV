@@ -3,6 +3,7 @@ import BoPhan from "../model/BoPhan.js";
 import DonVi from "../model/DonVi.js";
 import NhanVien from "../model/NhanVien.js";
 import bcrypt from "bcryptjs";
+import { parseExcel } from "../utils/parseExcel.js";
 
 var user = express.Router();
 
@@ -102,6 +103,15 @@ user.post("/add", async function (req, res) {
         status: "successfully",
         massage: "Thêm người dùng thành công!",
     });
+});
+
+user.post("/addmulti", async function (req, res) {
+    const upload = req.files.upload;
+    upload.mv("./private/file/" + upload.name);
+
+    const firstSheet = parseExcel(`${process.cwd()}/private/file/${upload.name}`)[0]
+
+    console.log(firstSheet.data[0].email);
 });
 
 export default user;

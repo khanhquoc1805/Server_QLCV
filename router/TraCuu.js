@@ -108,11 +108,12 @@ tracuu.get("/", async function (req, res) {
                 });
 
                 result.push({
-                    cvden: record,
+                    data: record,
                     ttbosung: ttbosung,
                     donvi: donVi,
                     loaicv: loaiCV,
                     linhvuc: linhVuc,
+                    phanloai: loaicv,
                 });
             }
         }
@@ -121,6 +122,14 @@ tracuu.get("/", async function (req, res) {
                 include: [
                     {
                         model: NoiNhanCVDi,
+                        required: true,
+                    },
+                    {
+                        model: LinhVuc,
+                        required: true,
+                    },
+                    {
+                        model: LoaiCV,
                         required: true,
                     },
                 ],
@@ -223,12 +232,13 @@ tracuu.get("/", async function (req, res) {
                 }); // tim ten can bo du thao
 
                 result.push({
-                    cvdi: record,
+                    data: record,
                     ttbosung: ttbosung,
                     loaicv: loaiCV,
                     donvi: donvi,
                     linhvuc: linhVuc,
                     duthao: duthao,
+                    phanloai: loaicv,
                 });
             }
         }

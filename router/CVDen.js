@@ -9,6 +9,7 @@ import cloudinary from "cloudinary";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
 import NhanVien from "../model/NhanVien.js";
+import removeVietnameseTones from "../utils/removeVNTones.js";
 
 const cvden = express.Router();
 
@@ -52,6 +53,29 @@ cvden.get("", async function (req, res) {
         const statusList = status.split(",");
         temp = temp.filter((cvden) => {
             return statusList.includes(cvden.getDataValue("xuly"));
+        });
+    }
+    if (textSearch !== undefined) {
+        temp = temp.filter((cvden) => {
+            return (
+                removeVietnameseTones(cvden.getDataValue("tencvden"))
+                    .toLowerCase()
+                    .includes(
+                        removeVietnameseTones(textSearch).toLowerCase()
+                    ) ||
+                removeVietnameseTones(
+                    cvden.getDataValue("LinhVuc").getDataValue("tenlv")
+                )
+                    .toLowerCase()
+                    .includes(
+                        removeVietnameseTones(textSearch).toLowerCase()
+                    ) ||
+                removeVietnameseTones(
+                    cvden.getDataValue("LoaiCV").getDataValue("tenloai")
+                )
+                    .toLowerCase()
+                    .includes(removeVietnameseTones(textSearch).toLowerCase())
+            );
         });
     }
 
