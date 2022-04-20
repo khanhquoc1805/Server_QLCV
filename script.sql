@@ -13,8 +13,7 @@ delete from socv where masocv="VPDT";
 select * from noinhancvdi;
 select * from cvden;
 
-delete from tt_bosung where matt!=61;
-
+delete from nhanvien where manv!="00001";
 
 select * from nhanvien;
 select * from xuly;
@@ -23,10 +22,12 @@ select * from cvdi;
 select * from tt_bosung;
 select * from noinhancvdi;
 select * from xulycvdi;
-delete from noinhancvdi where mavbdi=1 and madv=2;
-delete from xuly where macvden=7;
+delete from cvdi where mavbdi=5;
+
 
 update cvden set xuly="chuaxuly" where macvden=7;
+
+alter table nhanvien add column email varchar(128);
 
 
 select * from xuly;
@@ -51,7 +52,7 @@ delete from cvden where macvden !=111;
 
 
 insert into bophan values("ql","Quản Lý");
-insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp) values("c0928","Khánh Quốc","Quản Trị Hệ Thống","$2y$10$BOkz3s9agSLVm0Jw2yFj9eHqWC0AP.ChHWBDnIgLMIf1HLBER7qam","admin","ql");
+insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp,email,madv) values("00001","Khánh Quốc","Quản Trị Hệ Thống","$2y$10$BOkz3s9agSLVm0Jw2yFj9eHqWC0AP.ChHWBDnIgLMIf1HLBER7qam","admin","ql","quocb1809283@student.ctu.edu.vn",2);
 
 insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp) values("canbo1","Cán Bộ 1","Quản Trị Hệ Thống","$2a$12$z/1IWfmN/HzPgsz2U1LP1OYoX1avDSeWklf83rHVPaky//mKmhjUK","vanthu","ql");
 insert into nhanvien(manv,tennv,chucvu,matkhau,quyen,mabp) values("canbo2","Cán Bộ 2","Quản Trị Hệ Thống","$2a$12$7IPrRR0TnN886WESk2hRKunDIizDUMKn02T13yMTMfcxnVRnBh6r2","vanthu","ql");

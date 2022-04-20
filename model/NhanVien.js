@@ -32,6 +32,9 @@ const NhanVien = sequelize.define(
         quyen: {
             type: DataTypes.STRING,
         },
+        email: {
+            type: DataTypes.STRING,
+        },
         mabp: {
             type: DataTypes.STRING,
             references: {

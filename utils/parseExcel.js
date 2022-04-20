@@ -1,7 +1,7 @@
 import xlsx from "xlsx";
 
 export const parseExcel = (filename) => {
-    const excelData = xlsx.readFile(filename);
+    const excelData = xlsx.readFile(filename, { cellDates: true });
 
     return Object.keys(excelData.Sheets).map((name) => ({
         name,

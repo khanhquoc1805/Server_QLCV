@@ -4,6 +4,8 @@ import DonVi from "../model/DonVi.js";
 import NhanVien from "../model/NhanVien.js";
 import bcrypt from "bcryptjs";
 import { parseExcel } from "../utils/parseExcel.js";
+import { autoPassword } from "../utils/autoPassword.js";
+import { writeExcel } from "../utils/writeExcel.js";
 
 var user = express.Router();
 
@@ -107,11 +109,59 @@ user.post("/add", async function (req, res) {
 
 user.post("/addmulti", async function (req, res) {
     const upload = req.files.upload;
-    upload.mv("./private/file/" + upload.name);
+    await upload.mv("./private/file/" + upload.name);
 
-    const firstSheet = parseExcel(`${process.cwd()}/private/file/${upload.name}`)[0]
+    const firstSheet = parseExcel(
+        `${process.cwd()}/private/file/${upload.name}`
+    )[0];
 
-    console.log(firstSheet.data[0].email);
+    const dataResult = [];
+    for (const row of firstSheet.data) {
+        console.log(row);
+        const ngaysinhInsert = new Date(row.ngaysinh);
+        ngaysinhInsert.setDate(ngaysinhInsert.getDate() + 1);
+
+        const password = autoPassword();
+        const salt = await bcrypt.genSalt(12);
+        const hashpassword = await bcrypt.hash(password, salt);
+
+        const nv = await NhanVien.findAll({});
+
+        const index = nv.length - 1;
+        const a = parseInt(nv[index].getDataValue("manv"), 5) + 1;
+        const zero = "0".repeat(5 - (a + "").length); // lay so 0 tu so co truoc, vd 217 thi co 2 so 0 do chu so co 5 so
+
+        const insertUser = await NhanVien.create({
+            manv: `${zero}${a}`,
+            tennv: row.tennv,
+            ngaysinh: ngaysinhInsert,
+            diachi: row.diachi,
+            sdt: row.sdt,
+            chucvu: row.chucvu,
+            matkhau: hashpassword,
+            quyen: "canbo",
+            madv: row.madv,
+            email: row.email,
+        });
+        const dv = await DonVi.findOne({
+            where: {
+                madv: insertUser.getDataValue("madv"),
+            },
+        });
+        dataResult.push({
+            taikhoan: insertUser.getDataValue("manv"),
+            matkhau: password,
+            tennv: insertUser.getDataValue("tennv"),
+            email: insertUser.getDataValue("email"),
+            donvi: dv.getDataValue("tendv"),
+        });
+        writeExcel(dataResult);
+    }
+    setTimeout(() => {
+        res.sendFile(`${process.cwd()}/private/file/result.xlsx`);
+    }, 100);
+
+    // console.log();
 });
 
 export default user;
