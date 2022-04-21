@@ -48,6 +48,7 @@ auth.post("/dangnhap", async function (req, res) {
                     quyen: user.getDataValue("quyen"),
                     //bophan: user.BoPhan.getDataValue("tenbp"),
                     donvi: user.donvi.getDataValue("madv"),
+                    tennv: user.getDataValue("tennv"),
                 });
                 return;
             } else {

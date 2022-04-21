@@ -58,6 +58,18 @@ nhanvien.post("", async function (req, res) {
     res.send(nv);
 });
 
+nhanvien.get("/thongtin/:manv", async function (req, res) {
+    const manv = req.params.manv;
+    const nv = await NhanVien.findOne({
+        attributes: ["manv", "tennv"],
+        where: {
+            manv: manv,
+        },
+    });
+    res.send(nv)
+    console.log(nv);
+});
+
 nhanvien.get("/:madv", async function (req, res) {
     const madv = req.params.madv;
     const data = await NhanVien.findAll({

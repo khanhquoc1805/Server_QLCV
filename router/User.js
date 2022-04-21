@@ -56,11 +56,20 @@ user.get("", async function (req, res) {
 });
 
 user.post("/add", async function (req, res) {
-    const { manv, tennv, ngaysinh, diachi, sdt, chucvu, matkhau, quyen, madv } =
-        req.body;
+    const {
+        email,
+        tennv,
+        ngaysinh,
+        diachi,
+        sdt,
+        chucvu,
+        matkhau,
+        quyen,
+        madv,
+    } = req.body;
 
     if (
-        manv == null ||
+        email == null ||
         tennv == null ||
         ngaysinh == null ||
         diachi == null ||
@@ -74,24 +83,19 @@ user.post("/add", async function (req, res) {
         return;
     }
 
-    const user = await NhanVien.findOne({
-        where: {
-            manv: manv,
-        },
-    });
-
-    if (user) {
-        res.send({ status: "failed", massage: "Mã người dùng đã tồn tại!" });
-        return;
-    }
-
     const salt = await bcrypt.genSalt(12);
     const hashpassword = await bcrypt.hash(matkhau, salt);
     console.log(ngaysinh);
     const ngaysinhInsert = new Date(ngaysinh);
     ngaysinhInsert.setDate(ngaysinhInsert.getDate() + 1);
+    const nv = await NhanVien.findAll({});
+
+    const index = nv.length - 1;
+    const a = parseInt(nv[index].getDataValue("manv"), 5) + 1;
+    const zero = "0".repeat(5 - (a + "").length);
+
     const insertUser = await NhanVien.create({
-        manv: manv,
+        manv: `${zero}${a}`,
         tennv: tennv,
         ngaysinh: ngaysinhInsert,
         diachi: diachi,
@@ -100,6 +104,7 @@ user.post("/add", async function (req, res) {
         matkhau: hashpassword,
         quyen: quyen,
         madv: madv,
+        email: email,
     });
     res.send({
         status: "successfully",
@@ -161,7 +166,7 @@ user.post("/addmulti", async function (req, res) {
         res.sendFile(`${process.cwd()}/private/file/result.xlsx`);
     }, 100);
 
-    // console.log();
+    // console.log(upload);
 });
 
 export default user;

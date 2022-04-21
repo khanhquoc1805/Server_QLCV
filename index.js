@@ -11,14 +11,13 @@ import donvi from "./router/DonVi.js";
 import linhvuc from "./router/LinhVuc.js";
 import loaicv from "./router/LoaiCV.js";
 import nhanvien from "./router/NhanVien.js";
+import search from "./router/Search.js";
 import socv from "./router/SoCV.js";
 import tracuu from "./router/TraCuu.js";
 import user from "./router/User.js";
 import xuly from "./router/XuLy.js";
 const app = express();
 const port = 8080;
-
-
 
 app.use(cors());
 app.use(express.json());
@@ -38,7 +37,8 @@ app.use("/cvdi", cvdi);
 app.use("/donvi", donvi);
 app.use("/loaicv", loaicv);
 app.use("/user", user);
-app.use("/tracuu",tracuu)
+app.use("/tracuu", tracuu);
+app.use("/search", search);
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
