@@ -13,6 +13,7 @@ import NoiNhanCVDi from "../model/NoiNhanCVDi.js";
 import XulyCVDi from "../model/XuLyCVDi.js";
 import XuLyCVDi from "../model/XuLyCVDi.js";
 import CVDen from "../model/CVDen.js";
+import { readContentPDF } from "../utils/readContentPdf.js";
 
 const cvdi = express.Router();
 
@@ -210,7 +211,7 @@ cvdi.post("/add", async function (req, res) {
     const dokhan = body.dokhan;
     const domat = body.domat;
     const malv = body.malv;
-    const sotrang = body.sotrang;
+    //const sotrang = body.sotrang;
     const manv = body.manv;
 
     if (
@@ -222,18 +223,22 @@ cvdi.post("/add", async function (req, res) {
         dokhan == null ||
         domat == null ||
         malv == null ||
-        sotrang == null ||
         manv == null
     ) {
         res.send({ status: "failed" });
         return;
     }
 
-    dinhkem.mv("./public/file/cvdi/" + dinhkem.name);
-    const url = await uploadToCloudinary("./public/file/cvdi/" + dinhkem.name);
+    await dinhkem.mv(`${process.cwd()}/public/file/cvdi/` + dinhkem.name);
+    const pdf = await readContentPDF(
+        `${process.cwd()}/public/file/cvdi/` + dinhkem.name
+    );
+    const url = await uploadToCloudinary(
+        `${process.cwd()}/public/file/cvdi/` + dinhkem.name
+    );
     console.log(url);
 
-    fs.unlink("./public/file/cvdi/" + dinhkem.name, (err) => {
+    fs.unlink(`${process.cwd()}/public/file/cvdi/` + dinhkem.name, (err) => {
         if (err) {
             throw err;
         }
@@ -244,10 +249,11 @@ cvdi.post("/add", async function (req, res) {
     const ngayvbdi = new Date();
 
     const tt_bosung = await TT_BoSung.create({
-        sotrang,
+        sotrang: pdf.numpages,
         dinhkem: url.secure_url,
         dokhan,
         domat,
+        noidung: pdf.text,
     });
     const savedCvdi = await CVDi.create({
         maloai,

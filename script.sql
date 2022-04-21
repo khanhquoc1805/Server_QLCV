@@ -13,7 +13,10 @@ delete from socv where masocv="VPDT";
 select * from noinhancvdi;
 select * from cvden;
 
+
+
 delete from nhanvien where manv!="00001";
+delete from cvdi where mavbdi=6;
 
 select * from nhanvien;
 select * from xuly;
@@ -22,12 +25,16 @@ select * from cvdi;
 select * from tt_bosung;
 select * from noinhancvdi;
 select * from xulycvdi;
-delete from cvdi where mavbdi=5;
+
+
+delete from cvdi where mavbdi=7;
+delete from tt_bosung where matt!=7;
 
 
 update cvden set xuly="chuaxuly" where macvden=7;
 
 alter table nhanvien add column email varchar(128);
+alter table tt_bosung add column noidung varchar(10000);
 
 
 select * from xuly;
