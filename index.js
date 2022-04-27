@@ -16,6 +16,9 @@ import socv from "./router/SoCV.js";
 import tracuu from "./router/TraCuu.js";
 import user from "./router/User.js";
 import xuly from "./router/XuLy.js";
+// import FullText from "./model/FullText.js";
+import NhapCVDi from "./model/NhapCVDi.js"
+import DraftCVDi from "./router/NhapCVDi.js";
 const app = express();
 const port = 8080;
 
@@ -39,6 +42,7 @@ app.use("/loaicv", loaicv);
 app.use("/user", user);
 app.use("/tracuu", tracuu);
 app.use("/search", search);
+app.use("/draftcvdi",DraftCVDi);
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,

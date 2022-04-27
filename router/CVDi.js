@@ -211,7 +211,6 @@ cvdi.post("/add", async function (req, res) {
     const dokhan = body.dokhan;
     const domat = body.domat;
     const malv = body.malv;
-    //const sotrang = body.sotrang;
     const manv = body.manv;
 
     if (

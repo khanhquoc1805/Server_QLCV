@@ -4,7 +4,7 @@ use quanlycongvan;
 
 insert into socv values ("nd","Nghị Định","Sổ Văn Bản Đi","Phòng Kế Hoạch - Tổng Hợp");
 
-select * from socv;
+select * from nhapcvdi;
 
 
 delete from socv where masocv="VPDT";
@@ -103,13 +103,20 @@ select * from linhvuc;
 drop table cvdi;
 drop table noinhancvdi;
 drop table xulycvdi;
-drop table noinhancvdi;
+drop table myfulltext;
 
-select * from xulycvdi;
+ALTER TABLE myfulltext  
+ADD FULLTEXT(text);
+
+select * from myfulltext limit 5000;
+SHOW INDEXES FROM myfulltext;
 
 delete from noinhancvdi where madv=2;
 delete from loaicv where maloai=6;
 
 select * from cvdi join donvi on cvdi.madv=donvi.madv;
+
+
+SELECT `code`, `text`, `content`, `noidung`, `title` FROM `MyFullText` AS `myfulltext` WHERE MATCH (text) AGAINST ('Center');
 
 
