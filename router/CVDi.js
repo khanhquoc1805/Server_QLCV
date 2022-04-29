@@ -14,6 +14,7 @@ import XulyCVDi from "../model/XuLyCVDi.js";
 import XuLyCVDi from "../model/XuLyCVDi.js";
 import CVDen from "../model/CVDen.js";
 import { readContentPDF } from "../utils/readContentPdf.js";
+import NhapCVdi from "../model/NhapCVDi.js";
 
 const cvdi = express.Router();
 
@@ -212,6 +213,8 @@ cvdi.post("/add", async function (req, res) {
     const domat = body.domat;
     const malv = body.malv;
     const manv = body.manv;
+    const iddraft = body.iddraft;
+    console.log(iddraft);
 
     if (
         madv == null ||
@@ -272,6 +275,12 @@ cvdi.post("/add", async function (req, res) {
         manv: manv,
         mavbdi: savedCvdi.getDataValue("mavbdi"),
         vaitro: "duthao",
+    });
+
+    const deleteDraft = await NhapCVdi.destroy({
+        where: {
+            iddraft: iddraft,
+        },
     });
     res.send({ status: "successfully" });
 });
@@ -526,6 +535,48 @@ cvdi.post("/themnoinhan", async function (req, res) {
     );
 
     res.send({ status: "successfully", massage: "Thành công" });
+});
+
+cvdi.post("/delete/:mavbdi", async function (req, res) {
+    const mavbdi = req.params.mavbdi;
+    console.log(mavbdi);
+
+    if (!mavbdi) {
+        res.send({ status: "error" });
+        return;
+    }
+
+    const vbdi = await CVDi.findOne({
+        where: {
+            mavbdi: mavbdi,
+        },
+    });
+
+    const deleteNoiNhanCVDi = await NoiNhanCVDi.destroy({
+        where: {
+            mavbdi: mavbdi,
+        },
+    });
+
+    const deleteXuLyCVDi = await XuLyCVDi.destroy({
+        where: {
+            mavbdi: mavbdi,
+        },
+    });
+
+    const deleteCVDi = await CVDi.destroy({
+        where: {
+            mavbdi: mavbdi,
+        },
+    });
+
+    const deleteTTBS = await TT_BoSung.destroy({
+        where: {
+            matt: vbdi.getDataValue("matt"),
+        },
+    });
+
+    res.send({ status: "successfully" });
 });
 
 export default cvdi;

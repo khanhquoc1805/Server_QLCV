@@ -7,7 +7,7 @@ insert into socv values ("nd","Nghị Định","Sổ Văn Bản Đi","Phòng K�
 select * from nhapcvdi;
 
 
-delete from socv where masocv="VPDT";
+delete from nhapcvdi where iddraft!=0;
 
 
 select * from noinhancvdi;
@@ -100,6 +100,9 @@ select * from noinhancvdi;
 select * from xulycvdi;
 select * from donvi;
 select * from linhvuc;
+
+
+drop table nhapcvdi;
 drop table cvdi;
 drop table noinhancvdi;
 drop table xulycvdi;
