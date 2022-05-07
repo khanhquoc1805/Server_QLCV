@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.2.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.28.1",
     "cors": "^2.8.5",
@@ -21,6 +22,10 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
     "pdf-parse": "^1.1.1",
+    "redis": "^4.1.0",
+    "redisearch": "^1.0.0",
+    "redredisearch": "^0.0.1",
+    "reds": "^1.0.0",
     "sequelize": "^6.16.1",
     "xlsx": "^0.18.5"
   }

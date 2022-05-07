@@ -4,19 +4,27 @@ use quanlycongvan;
 
 insert into socv values ("nd","Nghị Định","Sổ Văn Bản Đi","Phòng Kế Hoạch - Tổng Hợp");
 
-select * from nhapcvdi;
+select count(code) from myfulltext;
+select * from myfulltext;
 
 
-delete from nhapcvdi where iddraft!=0;
+select * from myfulltext where text like "%Mental Center%";
+select count(code) from myfulltext where text like "%Center%";
+
+select * from cvdi where tenvbdi like "%Hospital%" and ttxuly="chuaxuly";
+select count(mavbdi) from cvdi where tenvbdi like "%Central%";
+
+
+delete from myfulltext where code!=0;
 
 
 select * from noinhancvdi;
-select * from cvden;
+select * from cvdi limit 50000;
 
 
 
 delete from nhanvien where manv!="00001";
-delete from cvdi where mavbdi=6;
+delete from cvdi where mavbdi!=6;
 
 select * from nhanvien;
 select * from xuly;
@@ -25,10 +33,16 @@ select * from cvdi;
 select * from tt_bosung;
 select * from noinhancvdi;
 select * from xulycvdi;
+select * from myfulltext;
+select * from loaicv;
+select * from linhvuc;
+select * from linhvuc;
 
 
-delete from cvdi where mavbdi=7;
-delete from tt_bosung where matt!=7;
+delete from noinhancvdi where mavbdi!=2;
+delete from xulycvdi where mavbdi!=2;
+delete from cvdi where mavbdi!=2;
+delete from tt_bosung where matt!=1;
 
 
 update cvden set xuly="chuaxuly" where macvden=7;
@@ -39,7 +53,7 @@ alter table tt_bosung add column noidung varchar(10000);
 
 select * from xuly;
 
-update cvdi set ttxuly = "chuaxuly" where mavbdi=1;
+update cvdi set ttxuly = "hoanthanhxuly" where mavbdi=3667;
 
 update nhanvien set madv = 3 where manv="canbo1";
 update cvden set xuly="chuaxuly" where macvden = 1;
