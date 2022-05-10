@@ -14,6 +14,8 @@ import LinhVuc from "../model/LinhVuc.js";
 import DonVi from "../model/DonVi.js";
 import NhanVien from "../model/NhanVien.js";
 import { getLengthData } from "../utils/lengthData.js";
+import CVDen from "../model/CVDen.js";
+import { createSoDen } from "../utils/createSoDen.js";
 
 const test = express.Router();
 
@@ -131,7 +133,7 @@ test.get("", async function (req, res) {
         })
     ).hits.hits;
 
-    console.log(temp);
+    //console.log(temp);
 
     if (textSearch !== undefined && textSearch !== "") {
         totalRows = (
@@ -409,6 +411,11 @@ test.post("/add", async function (req, res) {
     //         },
     //     });
     res.send({ status: "successfully" });
+});
+
+test.get("/soden", async function (req, res) {
+    const a =  await createSoDen(7,2);
+    res.send(a);
 });
 
 export default test;

@@ -10,6 +10,9 @@ import { uploadToCloudinary } from "../utils/cloudinary.js";
 import fs from "fs";
 import NhanVien from "../model/NhanVien.js";
 import removeVietnameseTones from "../utils/removeVNTones.js";
+import { createSoDen } from "../utils/createSoDen.js";
+import { readContentPDF } from "../utils/readContentPdf.js";
+import { RemoveDownLine } from "../utils/RemoveDownLine.js";
 
 const cvden = express.Router();
 
@@ -195,10 +198,8 @@ cvden.post("/add", async function (req, res) {
     const ngaycohieuluc = req.body.ngaycohieuluc;
     const ngayhethieuluc = req.body.ngayhethieuluc;
     const nguoiky = req.body.nguoiky;
-    const sotrang = req.body.sotrang;
     const dinhkem = req.files?.dinhkem;
     const masocv = req.body.masocv;
-    const soden = req.body.soden;
     const ngaycvden = req.body.ngayden;
     const dokhan = req.body.dokhan;
     const domat = req.body.domat;
@@ -218,10 +219,8 @@ cvden.post("/add", async function (req, res) {
         !ngaycohieuluc ||
         !ngayhethieuluc ||
         !nguoiky ||
-        !sotrang ||
         !dinhkem ||
         !masocv ||
-        !soden ||
         !ngaycvden ||
         !dokhan ||
         !domat ||
@@ -231,13 +230,22 @@ cvden.post("/add", async function (req, res) {
         res.send({ status: "failed" });
         return;
     }
-    dinhkem.mv("./public/file/cvden/" + dinhkem.name);
-    const url = await uploadToCloudinary("./public/file/cvden/" + dinhkem.name);
-    fs.unlink("./public/file/cvden/" + dinhkem.name, (err) => {
-        if (err) {
-            throw err;
-        }
-    });
+    await dinhkem.mv(`${process.cwd()}/public/file/cvden/` + dinhkem.name);
+
+    const pdf = await readContentPDF(
+        `${process.cwd()}/public/file/cvden/` + dinhkem.name
+    );
+
+    const url = await uploadToCloudinary(
+        `${process.cwd()}/public/file/cvden/` + dinhkem.name
+    );
+    // fs.unlink(`${process.cwd()}/public/file/cvden/` + dinhkem.name, (err) => {
+    //     if (err) {
+    //         throw err;
+    //     }
+    // });
+
+    const soden = await createSoDen(malv, madv);
     const ngaybanhanhInsert = new Date(ngaybanhanh);
     const ngaycohieulucInsert = new Date(ngaycohieuluc);
     const ngayhethieulucInsert = new Date(ngaycohieuluc);
@@ -246,10 +254,11 @@ cvden.post("/add", async function (req, res) {
     hanxuliInsert.setDate(hanxuliInsert.getDate() + 1); // do nhan tu client kieu ngay nen khoi tao lai bi lui 1 ngay
 
     const tt_bosung = await TT_BoSung.create({
-        sotrang,
+        sotrang: pdf.numpages,
         dinhkem: url.secure_url,
         dokhan,
         domat,
+        noidung: RemoveDownLine(pdf.text),
     });
 
     const saveCVDen = await CVDen.create({
@@ -257,10 +266,10 @@ cvden.post("/add", async function (req, res) {
         maloai,
         sohieugoc,
         coquanbanhanh,
-        ngaybanhanh,
+        ngaybanhanh: ngaybanhanhInsert,
         tencvden,
-        ngaycohieuluc,
-        ngayhethieuluc,
+        ngaycohieuluc: ngaycohieulucInsert,
+        ngayhethieuluc: ngayhethieulucInsert,
         nguoiky,
         masocv,
         soden,

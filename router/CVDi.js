@@ -15,6 +15,8 @@ import XuLyCVDi from "../model/XuLyCVDi.js";
 import CVDen from "../model/CVDen.js";
 import { readContentPDF } from "../utils/readContentPdf.js";
 import NhapCVdi from "../model/NhapCVDi.js";
+import { createSoDen } from "../utils/createSoDen.js";
+import { RemoveDownLine } from "../utils/RemoveDownLine.js";
 
 const cvdi = express.Router();
 
@@ -255,7 +257,7 @@ cvdi.post("/add", async function (req, res) {
         dinhkem: url.secure_url,
         dokhan,
         domat,
-        noidung: pdf.text,
+        noidung: RemoveDownLine(pdf.text),
     });
     const savedCvdi = await CVDi.create({
         maloai,
@@ -491,6 +493,7 @@ cvdi.post("/themnoinhan", async function (req, res) {
         },
     });
     for (const madv of dsnoinhan) {
+        const soden = await createSoDen(data.getDataValue("malv"), madv);
         //console.log(madv);
         const add = await NoiNhanCVDi.create({
             mavbdi: mavbdi,
@@ -521,6 +524,7 @@ cvdi.post("/themnoinhan", async function (req, res) {
             malv: data.getDataValue("malv"),
             madv: madv,
             nguoiky: data.getDataValue("nguoiky"),
+            soden: soden,
         });
     }
     const vbdi = await CVDi.update(

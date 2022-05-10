@@ -55,7 +55,7 @@ const CVDen = sequelize.define(
             type: DataTypes.STRING,
         },
         soden: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
         },
         
         mabp: {
