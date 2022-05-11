@@ -156,6 +156,8 @@ cvden.get("/:macvden", async function (req, res) {
         },
     });
 
+    console.log(macvden);
+
     if (data) {
         const loaicv = await LoaiCV.findOne({
             where: {

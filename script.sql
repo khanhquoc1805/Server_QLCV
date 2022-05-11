@@ -29,14 +29,20 @@ delete from cvdi where mavbdi!=6;
 select * from nhanvien;
 select * from xuly;
 select * from bophan;
-select * from cvdi;
-select * from tt_bosung;
+select * from cvdi limit 50500;
+select * from tt_bosung where matt=53776;
 select * from noinhancvdi;
 select * from xulycvdi;
 select * from myfulltext;
 select * from loaicv;
 select * from linhvuc;
 select * from linhvuc;
+select * from cvden;
+select * from nhapcvdi;
+select * from nhapcvden;
+
+
+alter table cvden modify soden varchar(32);
 
 
 delete from noinhancvdi where mavbdi!=2;
@@ -69,6 +75,8 @@ update tt_bosung set dinhkem="https://doc-08-30-docs.googleusercontent.com/docs/
 delete from tt_bosung where matt!=46;
 delete from cvdi where mavbdi !=9;
 delete from cvden where macvden !=111;
+
+update nhanvien set matkhau = "$2y$10$f8ZNj4G97kgVp9t.Tt34D.hqePqZQGxLa0Tnv5JgoZFy6xIkNqq9K" where manv = "00004";
 
 
 

@@ -20,7 +20,10 @@ import user from "./router/User.js";
 import xuly from "./router/XuLy.js";
 import test from "./test/elasticCVDi.js";
 
+//import NhapCVden from "./model/NhapCVDen.js";
+
 import { Client } from "@elastic/elasticsearch";
+import DraftCVDen from "./router/NhapCVDen.js";
 const client = new Client({
     node: "https://localhost:9200",
     auth: {
@@ -57,6 +60,7 @@ app.use("/user", user);
 app.use("/tracuu", tracuu);
 app.use("/search", search);
 app.use("/draftcvdi", DraftCVDi);
+app.use("/draftcvden",DraftCVDen);
 app.use("/test", test);
 
 cloudinary.v2.config({
