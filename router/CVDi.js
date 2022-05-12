@@ -233,6 +233,8 @@ cvdi.post("/add", async function (req, res) {
         return;
     }
 
+    //res.send({ status: "successfully" });
+
     await dinhkem.mv(`${process.cwd()}/public/file/cvdi/` + dinhkem.name);
     const pdf = await readContentPDF(
         `${process.cwd()}/public/file/cvdi/` + dinhkem.name

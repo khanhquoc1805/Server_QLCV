@@ -31,21 +31,22 @@ select * from xuly;
 select * from bophan;
 select * from cvdi limit 50500;
 select * from tt_bosung where matt=53776;
-select * from noinhancvdi;
-select * from xulycvdi;
+select * from noinhancvdi where mavbdi=3667;
+select * from xulycvdi where mavbdi=3667;
 select * from myfulltext;
 select * from loaicv;
 select * from linhvuc;
-select * from linhvuc;
+select * from xuly;
 select * from cvden;
 select * from nhapcvdi;
 select * from nhapcvden;
 
+delete from cvden where macvden=13;
 
 alter table cvden modify soden varchar(32);
 
 
-delete from noinhancvdi where mavbdi!=2;
+delete from noinhancvdi where mavbdi=3667 and ghichu="nhan";
 delete from xulycvdi where mavbdi!=2;
 delete from cvdi where mavbdi!=2;
 delete from tt_bosung where matt!=1;

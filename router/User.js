@@ -69,15 +69,15 @@ user.post("/add", async function (req, res) {
     } = req.body;
 
     if (
-        email == null ||
-        tennv == null ||
-        ngaysinh == null ||
-        diachi == null ||
-        sdt == null ||
-        chucvu == null ||
-        matkhau == null ||
-        quyen == null ||
-        madv == null
+        email === null ||
+        tennv === null ||
+        ngaysinh === null ||
+        diachi === null ||
+        sdt === null ||
+        chucvu === null ||
+        matkhau === null ||
+        quyen === null ||
+        madv === null
     ) {
         res.send({ status: "failed", massage: "" });
         return;
@@ -85,14 +85,14 @@ user.post("/add", async function (req, res) {
 
     const salt = await bcrypt.genSalt(12);
     const hashpassword = await bcrypt.hash(matkhau, salt);
-    console.log(ngaysinh);
     const ngaysinhInsert = new Date(ngaysinh);
     ngaysinhInsert.setDate(ngaysinhInsert.getDate() + 1);
     const nv = await NhanVien.findAll({});
 
     const index = nv.length - 1;
-    const a = parseInt(nv[index].getDataValue("manv"), 5) + 1;
+    const a = parseInt(nv[index].getDataValue("manv")) + 1;
     const zero = "0".repeat(5 - (a + "").length);
+
 
     const insertUser = await NhanVien.create({
         manv: `${zero}${a}`,
@@ -133,7 +133,7 @@ user.post("/addmulti", async function (req, res) {
         const nv = await NhanVien.findAll({});
 
         const index = nv.length - 1;
-        const a = parseInt(nv[index].getDataValue("manv"), 5) + 1;
+        const a = parseInt(nv[index].getDataValue("manv")) + 1;
         const zero = "0".repeat(5 - (a + "").length); // lay so 0 tu so co truoc, vd 217 thi co 2 so 0 do chu so co 5 so
 
         const insertUser = await NhanVien.create({

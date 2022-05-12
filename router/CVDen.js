@@ -14,6 +14,7 @@ import { createSoDen } from "../utils/createSoDen.js";
 import { readContentPDF } from "../utils/readContentPdf.js";
 import { RemoveDownLine } from "../utils/RemoveDownLine.js";
 import XuLy from "../model/XuLy.js";
+import NhapCVden from "../model/NhapCVDen.js";
 
 const cvden = express.Router();
 
@@ -29,6 +30,7 @@ cvden.get("", async function (req, res) {
         res.send({ status: "failed" });
         return;
     }
+    console.log(page);
 
     let temp = await CVDen.findAll({
         include: [
@@ -209,7 +211,8 @@ cvden.post("/add", async function (req, res) {
     const malv = req.body.malv;
     const hanxuli = req.body.hanxuli;
     const noinhan = req.body.noinhan;
-    // console.log(req.body);
+    const iddraft = req.body.iddraft;
+    console.log(req.body);
     // console.log(req.files?.dinhkem);
 
     if (
@@ -233,6 +236,8 @@ cvden.post("/add", async function (req, res) {
         res.send({ status: "failed" });
         return;
     }
+
+    res.send({ status: "successfully" });
     await dinhkem.mv(`${process.cwd()}/public/file/cvden/` + dinhkem.name);
 
     const pdf = await readContentPDF(
@@ -284,7 +289,14 @@ cvden.post("/add", async function (req, res) {
         matt: tt_bosung.getDataValue("matt"),
         xuly: "chuaxuly",
     });
-    res.send({ status: "successfully" });
+
+    const del = await NhapCVden.destroy({
+        where: {
+            iddraft: iddraft,
+        },
+    });
+
+    // res.send({ status: "successfully" });
 });
 
 cvden.post("/tiepnhanvanbancunghethong", async function (req, res) {
