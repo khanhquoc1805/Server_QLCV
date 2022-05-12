@@ -216,7 +216,7 @@ cvdi.post("/add", async function (req, res) {
     const malv = body.malv;
     const manv = body.manv;
     const iddraft = body.iddraft;
-    console.log(iddraft);
+    console.log(body);
 
     if (
         madv == null ||

@@ -13,6 +13,7 @@ import removeVietnameseTones from "../utils/removeVNTones.js";
 import { createSoDen } from "../utils/createSoDen.js";
 import { readContentPDF } from "../utils/readContentPdf.js";
 import { RemoveDownLine } from "../utils/RemoveDownLine.js";
+import XuLy from "../model/XuLy.js";
 
 const cvden = express.Router();
 
@@ -304,6 +305,29 @@ cvden.post("/tiepnhanvanbancunghethong", async function (req, res) {
         }
     );
     res.send({ status: "successfully", massage: "Tiếp nhận thành công" });
+});
+
+cvden.post("/delete/:macvden", async function (req, res) {
+    const macvden = req.params.macvden;
+
+    if (macvden === null) {
+        res.send({ status: "error" });
+        return;
+    }
+
+    const delXuLy = await XuLy.destroy({
+        where: {
+            macvden: macvden,
+        },
+    });
+
+    const delCVden = await CVDen.destroy({
+        where: {
+            macvden: macvden,
+        },
+    });
+
+    res.send({ status: "successfully" });
 });
 
 export default cvden;
