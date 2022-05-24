@@ -24,7 +24,7 @@ cvdi.get("", async function (req, res) {
     const { limit, page, status, textSearch, madv } = req.query;
     let data = [];
 
-    console.log(madv);
+    //console.log(madv);
 
     const limitInt = parseInt(limit);
     const pageInt = parseInt(page);
@@ -44,6 +44,14 @@ cvdi.get("", async function (req, res) {
                 model: LoaiCV,
                 required: true,
             },
+            {
+                model: NoiNhanCVDi,
+                required: true,
+            },
+            {
+                model: TT_BoSung,
+                required: true,
+            },
         ],
     });
 
@@ -54,6 +62,19 @@ cvdi.get("", async function (req, res) {
             return statusList.includes(cvdi.getDataValue("ttxuly"));
         });
     }
+    if (madv) {
+        temp = temp.filter((cvdi) => {
+            return (
+                cvdi.getDataValue("NoiNhanCVDi").getDataValue("madv") == madv &&
+                cvdi.getDataValue("NoiNhanCVDi").getDataValue("ghichu") ===
+                    "gui"
+            );
+        });
+    }
+    console.log(temp.length);
+
+    // console.log(temp[0].getDataValue("NoiNhanCVDi").getDataValue("madv"));
+    // console.log(madv);
 
     if (textSearch !== undefined) {
         temp = temp.filter((cvdi) => {
@@ -74,6 +95,13 @@ cvdi.get("", async function (req, res) {
                     cvdi.getDataValue("LoaiCV").getDataValue("tenloai")
                 )
                     .toLowerCase()
+                    .includes(
+                        removeVietnameseTones(textSearch).toLowerCase()
+                    ) ||
+                removeVietnameseTones(
+                    cvdi.getDataValue("TT_BoSung").getDataValue("noidung")
+                )
+                    .toLowerCase()
                     .includes(removeVietnameseTones(textSearch).toLowerCase())
             );
         });
@@ -82,6 +110,7 @@ cvdi.get("", async function (req, res) {
     let totalRows = temp.length;
     temp.splice(0, (pageInt - 1) * limitInt);
     data = temp.slice(0, limitInt);
+
     const result = [];
     for (const record of data) {
         const ttbosung = await TT_BoSung.findOne({
@@ -110,6 +139,7 @@ cvdi.get("", async function (req, res) {
         let donvi;
         if (!noinhan) {
             donvi = { madv: 0, tendv: "" };
+            continue;
         } else {
             donvi = await DonVi.findOne({
                 where: {
@@ -146,6 +176,7 @@ cvdi.get("", async function (req, res) {
         limit: limitInt,
         totalRows: totalRows,
     };
+    //console.log(result.length);
     res.send({ data: result, pagination });
 });
 
@@ -335,6 +366,7 @@ cvdi.post("/chuyenxuly", async function (req, res) {
 cvdi.post("/themvaoso/:mavbdi", async function (req, res) {
     const mavbdi = parseInt(req.params.mavbdi);
     const masocv = req.body.masocv;
+    console.log(mavbdi);
     if (Number.isNaN(mavbdi) || !masocv) {
         res.send({ status: "failed" });
         return;

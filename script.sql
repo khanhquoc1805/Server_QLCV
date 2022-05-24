@@ -7,6 +7,7 @@ insert into socv values ("nd","Nghị Định","Sổ Văn Bản Đi","Phòng K�
 select count(code) from myfulltext;
 select * from myfulltext;
 
+alter table tt_bosung modify column noidung text;
 
 select * from myfulltext where text like "%Mental Center%";
 select count(code) from myfulltext where text like "%Center%";
@@ -14,41 +15,60 @@ select count(code) from myfulltext where text like "%Center%";
 select * from cvdi where tenvbdi like "%Hospital%" and ttxuly="chuaxuly";
 select count(mavbdi) from cvdi where tenvbdi like "%Central%";
 
+select count(id) from demo where trichyeu like "%State%";
+
+select count(id) from demo;
+select * from demo;
+alter table demo add foreign key (madv) references donvi(madv);
+alter table demo add foreign key (maloai) references loaicv(maloai);
+alter table demo add foreign key (malv) references linhvuc(malv);
+
+delete from demo where id!=100000;
+
+
+
 
 delete from myfulltext where code!=0;
 
 
 select * from noinhancvdi;
-select * from cvdi limit 50000;
+select * from cvdi limit 55555;
 
 
 
 delete from nhanvien where manv!="00001";
-delete from cvdi where mavbdi!=6;
+delete from cvdi where mavbdi!=53708;
+
+DELETE from cvdi WHERE mavbdi BETWEEN 3657 AND 53706;
+DELETE from xulycvdi WHERE mavbdi BETWEEN 3657 AND 53706;
 
 select * from nhanvien;
 select * from xuly;
 select * from bophan;
-select * from cvdi limit 50500;
-select * from tt_bosung where matt=53776;
-select * from noinhancvdi where mavbdi=3667;
-select * from xulycvdi where mavbdi=3667;
+select * from cvdi;
+select * from tt_bosung limit 55500;
+select * from noinhancvdi;
+select * from xulycvdi;
 select * from myfulltext;
 select * from loaicv;
 select * from linhvuc;
 select * from xuly;
 select * from cvden;
+select * from cvdi where ttxuly ="chuaxuly";
+select * from cvdi join noinhancvdi on cvdi.mavbdi = noinhancvdi.mavbdi  where cvdi.ttxuly !="chuaxuly" and madv=2;
 select * from nhapcvdi;
 select * from nhapcvden;
 
-delete from cvden where macvden=13;
+update cvdi set ttxuly="daphathanh" where mavbdi=3667;
+
+delete from cvden where macvden=25;
 
 alter table cvden modify soden varchar(32);
 
 
-delete from noinhancvdi where mavbdi=3667 and ghichu="nhan";
-delete from xulycvdi where mavbdi!=2;
-delete from cvdi where mavbdi!=2;
+delete from noinhancvdi where mavbdi=53708;
+delete from xulycvdi where mavbdi=53708;
+delete from cvdi where mavbdi=53708;
 delete from tt_bosung where matt!=1;
 
 
@@ -60,7 +80,7 @@ alter table tt_bosung add column noidung varchar(10000);
 
 select * from xuly;
 
-update cvdi set ttxuly = "hoanthanhxuly" where mavbdi=3667;
+update cvdi set ttxuly = "daphathanh" where mavbdi=53714;
 
 update nhanvien set madv = 3 where manv="canbo1";
 update cvden set xuly="chuaxuly" where macvden = 1;

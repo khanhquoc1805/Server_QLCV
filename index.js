@@ -19,8 +19,10 @@ import tracuu from "./router/TraCuu.js";
 import user from "./router/User.js";
 import xuly from "./router/XuLy.js";
 import test from "./test/elasticCVDi.js";
+import demo from "./router/Demo.js";
 
 //import NhapCVden from "./model/NhapCVDen.js";
+//import Demo from "./model/Demo.js"
 
 import { Client } from "@elastic/elasticsearch";
 import DraftCVDen from "./router/NhapCVDen.js";
@@ -60,8 +62,9 @@ app.use("/user", user);
 app.use("/tracuu", tracuu);
 app.use("/search", search);
 app.use("/draftcvdi", DraftCVDi);
-app.use("/draftcvden",DraftCVDen);
+app.use("/draftcvden", DraftCVDen);
 app.use("/test", test);
+app.use("/demo", demo);
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -83,32 +86,12 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
 
-//await elasticConnect().catch(console.log);;
+// await elasticConnect().catch(console.log);;
 // client.indices.putSettings({
-//     index: "cvdi",
-//     body: { settings: { max_result_window: 90000 } },
+//     index: "demo",
+//     body: { settings: { max_result_window: 350000 } },
 // });
 
-// let temp = (
-//     await client.search({
-//         index: "cvdi",
-//         search_type: "query_then_fetch",
-
-//         from: 20000,
-//         size: 10000,
-//         body: {
-//             query: {
-//                 terms: {
-//                     ttxuly: ["chuaxuly"],
-//                 },
-//             },
-//         },
-
-//         // "search_after": [1463538857, "654323"],
-//         // "sort": [
-//         //     {"date": "asc"},
-//         //     {"_id": "desc"}
-//         // ]
-//     })
-// ).hits.hits;
-
+// await client.indices.delete({
+//     index: "demo"
+// })

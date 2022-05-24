@@ -51,14 +51,6 @@ DraftCVDen.post("/add", async function (req, res) {
         return;
     }
 
-    if (req.files !== null) {
-        await req.files.dinhkem.mv(
-            `${process.cwd()}/public/file/nhap/` + req.files.dinhkem.name
-        );
-        values.dinhkem =
-            `${process.cwd()}/public/file/nhap/` + req.files.dinhkem.name;
-    }
-
     if (iddraft === "") {
         const values = {};
         // values.ngaybanhanh = ngaybanhanh;
@@ -67,6 +59,13 @@ DraftCVDen.post("/add", async function (req, res) {
         // values.ngayden = ngayden;
         // values.hanxuli = hanxuli;
         //console.log("da vao");
+        if (req.files !== null) {
+            await req.files.dinhkem.mv(
+                `${process.cwd()}/public/file/nhap/` + req.files.dinhkem.name
+            );
+            values.dinhkem =
+                `${process.cwd()}/public/file/nhap/` + req.files.dinhkem.name;
+        }
 
         if (maloai !== "") {
             values.maloai = maloai;

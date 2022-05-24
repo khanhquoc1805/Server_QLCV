@@ -414,8 +414,10 @@ test.post("/add", async function (req, res) {
 });
 
 test.get("/soden", async function (req, res) {
-    const a =  await createSoDen(7,2);
+    const a = await createSoDen(7, 2);
     res.send(a);
 });
+
+test.post("/");
 
 export default test;

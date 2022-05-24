@@ -30,7 +30,7 @@ cvden.get("", async function (req, res) {
         res.send({ status: "failed" });
         return;
     }
-    console.log(page);
+    //console.log(page);
 
     let temp = await CVDen.findAll({
         include: [
@@ -78,6 +78,13 @@ cvden.get("", async function (req, res) {
                     ) ||
                 removeVietnameseTones(
                     cvden.getDataValue("LoaiCV").getDataValue("tenloai")
+                )
+                    .toLowerCase()
+                    .includes(
+                        removeVietnameseTones(textSearch).toLowerCase()
+                    ) ||
+                removeVietnameseTones(
+                    cvden.getDataValue("TT_BoSung").getDataValue("noidung")
                 )
                     .toLowerCase()
                     .includes(removeVietnameseTones(textSearch).toLowerCase())

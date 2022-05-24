@@ -32,9 +32,10 @@ socv.get("", async function (req, res) {
     res.send({ data, pagination });
 });
 
+
 socv.post("/add", async function (req, res) {
     const body = req.body;
-    console.log(body);
+    //console.log(body);
 
     if (
         body.masocv !== undefined &&

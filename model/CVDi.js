@@ -98,8 +98,9 @@ CVDi.belongsTo(LoaiCV, {
 CVDi.belongsTo(NhanVien, {
     foreignKey: "manv",
 });
-
-
+CVDi.belongsTo(TT_BoSung, {
+    foreignKey: "matt",
+});
 
 await CVDi.sync();
 
